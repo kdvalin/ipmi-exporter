@@ -25,8 +25,7 @@ def run(file: str, frequency: float):
     with open(file, 'a') as f:
         try:
             while True: #Do this infinitely
-                for row in get_ipmi_sensors():
-                    print(row)
+                print(get_ipmi_sensors())
                 time.sleep(frequency)
         except KeyboardInterrupt:
             print("Received Keyboard Interrupt, exiting")
@@ -35,11 +34,14 @@ def run(file: str, frequency: float):
 
 def get_ipmi_sensors():
     proc = subprocess.run(IPMI_COMMAND, shell=True)
+    output = []
     with open(TMP_FILE, 'r') as f:
-        return csv.reader(f.readlines())
+        for row in csv.reader(f.readlines()):
+            output.append(row)
+    return output
 
 def _create_header(file: io.TextIOWrapper):
-    pass
+    file
 
 def _options(parser: argparse.ArgumentParser):
     parser.add_argument(
