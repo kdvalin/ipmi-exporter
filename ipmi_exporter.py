@@ -34,6 +34,7 @@ def run(file: str, frequency: float):
                     create_header = False
                 
                 write_data(f, data)
+                f.flush()
                 print(f'Sleeping for {frequency} seconds')
                 time.sleep(frequency)
         except KeyboardInterrupt: # Loop until Ctl-C
@@ -45,7 +46,7 @@ def write_data(file: io.TextIOWrapper, vals: list):
 
     file.write(f"{now}")
     for row in vals:
-        file.write(f",{vals[1]}")
+        file.write(f",{row[1]}")
     file.write('\n')
 
 def get_ipmi_sensors() -> list:
