@@ -42,7 +42,7 @@ def run(file: str, frequency: float):
             return
 
 def write_data(file: io.TextIOWrapper, vals: list):
-    now = int(dt.datetime.utcnow().timestamp())
+    now = dt.datetime.utcnow().replace(tzinfo=dt.timezone.utc).isoformat()
 
     file.write(f"{now}")
     for row in vals:
