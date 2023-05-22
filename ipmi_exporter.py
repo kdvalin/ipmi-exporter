@@ -6,6 +6,7 @@ import time
 import io
 import csv
 import subprocess
+import datetime as dt
 
 TMP_FILE="/tmp/ipmi.csv"
 IPMI_COMMAND=f"ipmitool sensor | sed -e 's/[[:blank:]]*|[[:blank:]]*/,/g' | cut -d, -f1-3 > {TMP_FILE}"
@@ -24,15 +25,29 @@ def run(file: str, frequency: float):
 
     with open(file, 'a') as f:
         try:
-            while True: #Do this infinitely
-                print(get_ipmi_sensors())
+            while True:
+                data = get_ipmi_sensors()
+                data.sort(key=lambda x: x[0]) # Sort by name of the sensor
+                
+                if create_header:
+                    _create_header(f, get_sensor_names(data))
+                    create_header = False
+                
+
                 time.sleep(frequency)
-        except KeyboardInterrupt:
+        except KeyboardInterrupt: # Loop until Ctl-C
             print("Received Keyboard Interrupt, exiting")
             return
 
+def write_data(file: io.TextIOWrapper, vals: list):
+    now = dt.datetime.utcnow()
 
-def get_ipmi_sensors():
+    file.write(f"{now}")
+    for row in vals:
+        file.write(f",{vals[1]}")
+    file.write('\n')
+
+def get_ipmi_sensors() -> list:
     proc = subprocess.run(IPMI_COMMAND, shell=True)
     output = []
     with open(TMP_FILE, 'r') as f:
@@ -40,8 +55,14 @@ def get_ipmi_sensors():
             output.append(row)
     return output
 
-def _create_header(file: io.TextIOWrapper):
-    file
+def _create_header(file: io.TextIOWrapper, sensors: list):
+    file.write('Timestamp')
+    for sensor in sensors:
+        file.write(f',{sensor}')
+    file.write('\n')
+
+def get_sensor_names(vals: list) -> list:
+    return [f"{val[0]} ({val[2]})" for val in vals]
 
 def _options(parser: argparse.ArgumentParser):
     parser.add_argument(
