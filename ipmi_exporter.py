@@ -33,7 +33,8 @@ def run(file: str, frequency: float):
                     _create_header(f, get_sensor_names(data))
                     create_header = False
                 
-
+                write_data(f, data)
+                print(f'Sleeping for {frequency} seconds')
                 time.sleep(frequency)
         except KeyboardInterrupt: # Loop until Ctl-C
             print("Received Keyboard Interrupt, exiting")
