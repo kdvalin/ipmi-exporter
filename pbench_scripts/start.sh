@@ -8,5 +8,4 @@ if [ ! `which ipmitool` ];then
     exit 1
 fi
 
-pid=$(/root/ipmi-exporter/ipmi_exporter.py -t $interval -f ${out_dir}/ipmi.csv > /dev/null &)
-echo $pid > $out_dir/ipmi_exporter.pid
+/root/ipmi-exporter/ipmi_exporter.py -t $interval -f ${out_dir}/ipmi.csv > /dev/null &
