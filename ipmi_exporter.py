@@ -42,7 +42,7 @@ def run(file: str, frequency: float):
             return
 
 def write_data(file: io.TextIOWrapper, vals: list):
-    now = dt.datetime.utcnow().replace(tzinfo=dt.timezone.utc).isoformat()
+    now = dt.datetime.utcnow().replace(tzinfo=dt.timezone.utc).strftime("%m/%d/%Y %H:%M:%S")
 
     file.write(f"{now}")
     for row in vals:
@@ -58,7 +58,7 @@ def get_ipmi_sensors() -> list:
     return output
 
 def _create_header(file: io.TextIOWrapper, sensors: list):
-    file.write('Timestamp')
+    file.write('Timestamp (UTC)')
     for sensor in sensors:
         file.write(f',{sensor}')
     file.write('\n')
