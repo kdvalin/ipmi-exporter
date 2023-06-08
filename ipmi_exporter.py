@@ -68,7 +68,7 @@ def get_sensor_names(vals: list) -> list:
 
 def _options(parser: argparse.ArgumentParser):
     parser.add_argument(
-        "-t", "--time-frequency",
+        "-i", "--interval",
         help="How long in seconds the polling interval is (default: 30, floats supported).",
         action="store", required=False,
         default=30, type=float
