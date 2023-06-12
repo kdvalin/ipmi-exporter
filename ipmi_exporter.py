@@ -18,7 +18,7 @@ def main():
     )
     _options(parser)
     args = parser.parse_args()
-    run(args.file, args.time_frequency)
+    run(args.file, args.interval)
 
 def run(file: str, frequency: float):
     create_header = not os.path.exists(file)
