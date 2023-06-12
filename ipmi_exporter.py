@@ -26,6 +26,7 @@ def run(file: str, frequency: float):
     with open(file, 'a') as f:
         try:
             while True:
+                start = dt.datetime.utcnow()
                 data = get_ipmi_sensors()
                 data.sort(key=lambda x: x[0]) # Sort by name of the sensor
                 
@@ -35,8 +36,12 @@ def run(file: str, frequency: float):
                 
                 write_data(f, data)
                 f.flush()
-                print(f'Sleeping for {frequency} seconds')
-                time.sleep(frequency)
+                end = dt.datetime.utcnow()
+                duration = (end - start).total_seconds()
+
+                if duration < frequency:
+                    print(f'Sleeping for {frequency - duration} seconds')
+                    time.sleep(frequency)
         except KeyboardInterrupt: # Loop until Ctl-C
             print("Received Keyboard Interrupt, exiting")
             return
