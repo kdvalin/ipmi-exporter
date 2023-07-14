@@ -14,3 +14,9 @@ python3 impi_exporter.py [-h/--help] [-f/--file FILE] [-t TIME_FREQUENCY]
 ### Options
 - `-f/--file` sets the file name of the exported CSV (existing data will not be overwritten).  Defaults to `ipmi.csv`
 - `-t` sets the interval (in seconds) between IPMI sensor requests (Note: gathering sensor data may take a bit, and this option does not know how long it took to request the data).  Default is 30 seconds.
+
+## Usage with [pbench](https://github.com/distributed-system-analysis/pbench)
+
+This program supports being used as a `user-tool` within pbench.
+
+Simply run `./pbench_register.sh` to automatically register this repo as a tool.
